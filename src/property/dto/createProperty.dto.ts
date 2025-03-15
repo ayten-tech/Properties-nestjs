@@ -15,4 +15,6 @@ export class CreatePropertyDto {
   @IsPositive()
   // @IsNumber()
   price: number;
+
 }
+// this is 
