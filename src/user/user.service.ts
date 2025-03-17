@@ -16,11 +16,16 @@ export class UserService {
       const user = this.userRepository.create(createUserDto);
     return await this.userRepository.save(user);
   }
-  
+
+  // //GET Request specify id of property
+  // async findOne(id: number) {
+  //   return this.propertyRepository.findOneBy({ id });
+  // }
+  //GET Request specify id of property
+  async findOne(id: number){
+    return this.userRepository.findOne({ where: { id } });
+  }
+
 
 }
 
-//  async create(createPropertyDto: CreatePropertyDto) {
-//     const property = this.propertyRepository.create(createPropertyDto);
-//     return await this.propertyRepository.save(property);
-//   }

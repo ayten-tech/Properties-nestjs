@@ -2,6 +2,8 @@ import { Controller, Get, Param, NotFoundException,Body,Post,UsePipes } from '@n
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ValidationPipe } from '@nestjs/common';
+import { ParseIdPipe } from '../property/pipes/parseIdPipe';
+
 
 @Controller('users')
 export class UserController {
@@ -32,6 +34,12 @@ export class UserController {
     // createUserDto is already validated and transformed
     return this.userService.create(createUserDto);
   }
+
+  @Get(':id')
+    getUser(@Param('id',ParseIdPipe) id: number) {
+      console.log("inside controller parseidpipe ");
+      return this.userService.findOne(id);
+    }
 
 
 }
