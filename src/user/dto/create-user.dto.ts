@@ -2,12 +2,24 @@ import { IsString, IsEmail, IsInt, IsOptional, MinLength, MaxLength,IsNotEmpty }
 import { Type } from 'class-transformer';
 
 export class CreateUserDto {
+  
+  @IsOptional()
+  @IsString()
+  firstName: string;
+
+  @IsString()
+  lastName: string; 
+
+
+  @IsOptional()
   @IsString()
   name: string;
 
+  @IsOptional()
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @IsInt()
   @Type(() => Number) // Transform the incoming value to a number
   age: number;

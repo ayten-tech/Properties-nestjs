@@ -5,6 +5,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Property } from '../entities/property.entity';
 import { CreatePropertyZodDto } from './dto/createPropertyZod.dto';
 import { UpdatePropertyDto } from './dto/updateProperty.dto';
+import { DEFAULT_PAGE_SIZE } from '../constants/constants'
+import { PaginationDto } from './dto/pagination.dto';
+import { ValidationPipe } from '@nestjs/common';
 @Injectable()
 export class PropertyService {
   constructor(
@@ -33,6 +36,17 @@ export class PropertyService {
     return this.propertyRepository.findOneBy({ id });
   }
 
+  //skip is an offset ,
+  async findAll(paginationDto: PaginationDto) {
+    let { skip = 5, limit } = paginationDto;
+    return this.propertyRepository.find({
+      skip,
+      take: limit?? DEFAULT_PAGE_SIZE,
+      order: {
+        id: 'ASC',
+      }, 
+    });
+  }
 
   
 
@@ -48,4 +62,8 @@ export class PropertyService {
   // create(createPropertyZodDto: CreatePropertyZodDto) {
   //   return { message: 'Property created successfully', data: createPropertyZodDto };
   // }
+  
+  
+  
+
 }

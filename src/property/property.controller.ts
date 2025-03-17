@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body,UsePipes,Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body,UsePipes,Param, Patch, Delete, Query } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 import { UpdatePropertyDto } from './dto/updateProperty.dto';
@@ -8,6 +8,7 @@ import {
     createPropertySchema,
   } from './dto/createPropertyZod.dto';
 import { ZodValidationPipe } from './pipes/zod-validation.pipe';
+import { PaginationDto } from './dto/pagination.dto';
 @Controller('property')
 export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}
@@ -47,8 +48,10 @@ export class PropertyController {
     return this.propertyService.findOne(id);
   }
 
-//   @Get()
-//   findAll() {
-//     return this.propertyService.findAll();
-//   }
+  @Get()
+  findAll(@Query() paginationDto: PaginationDto) {
+    console.log('Controller Pagination');
+
+    return this.propertyService.findAll(paginationDto);
+  }
 }

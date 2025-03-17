@@ -30,6 +30,8 @@ export class UserController {
 @Post()
   createUser(@Body() createUserDto: CreateUserDto) {
     // createUserDto is already validated and transformed
-    return this.userService.createUser(createUserDto);
+    return this.userService.create(createUserDto);
   }
+
+
 }
