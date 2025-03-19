@@ -26,6 +26,10 @@ export class UserService {
     return this.userRepository.findOne({ where: { id } });
   }
 
+  //will retreive user based on email parameter(local strategy)
+  async findByEmail(email: string){
+    return await this.userRepository.findOne({ where: { email } });
+  }
 
 }
 
