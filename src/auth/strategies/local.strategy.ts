@@ -18,7 +18,7 @@ export class LocalStrategy extends PassportStrategy(Strategy){
     //  validate(email: string, password: string){
     //     console.log("inside the local strategy")
     //     //calls validateUser method in authservice 
-    //    //empty password should be here 
+    //    //empty password should defined in custom guard first because it validates request before strategy execution
     //    /* because Passport automatically rejects empty passwords 
     //     before calling validate().*/
     //    //The error is thrown before your validateUser() function even runs.
