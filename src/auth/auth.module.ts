@@ -5,15 +5,16 @@ import { UserService } from 'src/user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConfig } from './config/jwt.config';
+import { ConfigModule } from '@nestjs/config';
+import jwtConfig from './config/jwt.config';
 import { LocalStrategy } from './strategies/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
     imports: [
       TypeOrmModule.forFeature([User]),
-      PassportModule
-      // JwtModule.registerAsync(jwtConfig.asProvider()),
+      PassportModule,
+      JwtModule.registerAsync(jwtConfig.asProvider()),
     ],
     controllers: [AuthController],
     providers: [AuthService, UserService,LocalStrategy]

@@ -14,7 +14,13 @@ export class AuthController {
     @Post('login')
     async login(@Request() req) {
       console.log(" Inside AuthController login()");
-      return req.user;  //  Passport sets req.user after validate() runs
+      //The login endpoint generates the token after verifying the user's credentials and sends the token along with the user ID as the response.
+      //extract the user from the request then pass its id to the login function  
+      const token = this.authService.login(req.user.id) //calls login method to generate a token, req.user.id carries the id of the authenticated user after local strategy authentication is successful 
+      console.log("defining token in controller")
+      // return req.user;  //  Passport sets req.user after validate() runs
+      return {id:req.user.id, token} //after creating token will send it back to the client along with the user id as an object
+      
     }
 
 }
