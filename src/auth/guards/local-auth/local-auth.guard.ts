@@ -12,7 +12,7 @@ export class LocalAuthGuard extends AuthGuard('local') {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const { password } = request.body; //extracts the password from the request body
-    console.log("inside the custom guard")
+    console.log("inside the local custom guard")
     // If password is empty(the password field is not present in the request), throw an UnauthorizedException
     if (!password) {
         console.log("empty custom guard")

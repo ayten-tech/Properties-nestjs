@@ -2,12 +2,13 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { AuthJwtPayload } from './types/auth-jwtPayload'
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly userService: UserService,
-        // private readonly jwtService: JwtService,
+        private readonly jwtService: JwtService,
       ) {}
 
       async validateUser(email: string, password: string): Promise<any>{{
@@ -33,6 +34,13 @@ export class AuthService {
         }
 
       }
+      }
+
+      login(userId: number){ 
+        const payload:AuthJwtPayload = { sub: userId} //creates jwt payload
+        console.log('From login method in auth servide, payload is ',  payload)
+        //jwtService.sign(payload) method uses the JWT configuration from jwt.config.ts to sign the token with secret key
+        return this.jwtService.sign(payload)//signs the jwt payload generating token and returns it back to auth controller
       }
 
 }
