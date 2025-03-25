@@ -1,8 +1,10 @@
-import { Controller, Get, Param, NotFoundException,Body,Post,UsePipes } from '@nestjs/common';
+import { Controller, Get, Param, NotFoundException,Body,Post,UsePipes, UseGuards, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ValidationPipe } from '@nestjs/common';
 import { ParseIdPipe } from '../property/pipes/parseIdPipe';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
+import { get } from 'http';
 
 
 @Controller('users')
@@ -35,11 +37,20 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Get(':id')
-    getUser(@Param('id',ParseIdPipe) id: number) {
-      console.log("inside controller parseidpipe ");
-      return this.userService.findOne(id);
-    }
+  //this was before the implementation of jwt authentication validating token part
+  // @Get(':id')
+  //   getUser(@Param('id',ParseIdPipe) id: number) {
+  //     console.log("inside controller parseidpipe ");
+  //     return this.userService.findOne(id);
+  //   }
 
+  
+  
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Req() req) {
+    console.log('inside profile user controller the return is ',req.user.id )
+    return this.userService.findOne(req.user.id);// { id: "18" } this comes from validation method after attachement
+  }
 
 }

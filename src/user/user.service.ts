@@ -23,7 +23,12 @@ export class UserService {
   // }
   //GET Request specify id of property
   async findOne(id: number){
-    return this.userRepository.findOne({ where: { id } });
+    return this.userRepository.findOne({ 
+      where: { id },
+      //returns specific columns instead of the whole entity, 
+      // to return the whole entity just remove the following select clause
+      select: ['firstName','lastName','email']
+    });
   }
 
   //will retreive user based on email parameter(local strategy)
