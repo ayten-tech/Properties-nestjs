@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Console } from 'node:console';
 import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
+import { RefreshAuthGuard } from './guards/refresh-auth/refresh-auth.guard';
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
@@ -14,13 +15,18 @@ export class AuthController {
     @Post('login')
     async login(@Request() req) {
       console.log(" Inside AuthController login()");
-      //The login endpoint generates the token after verifying the user's credentials and sends the token along with the user ID as the response.
-      //extract the user from the request then pass its id to the login function  
-      const token = this.authService.login(req.user.id) //calls login method to generate a token, req.user.id carries the id of the authenticated user after local strategy authentication is successful 
-      console.log("defining token in controller")
-      // return req.user;  //  Passport sets req.user after validate() runs
-      return {id:req.user.id, token} //after creating token will send it back to the client along with the user id as an object
+      return this.authService.login(req.user.id);
       
+    }
+    //will create new api endpoint so when the access token expires it calls the api of the refresh token 
+    //so for that we will have to create a strategy for the refresh token
+    @UseGuards(RefreshAuthGuard) // the custom gurad class we created
+    @Post('refresh')
+    refreshToken(@Request() req){
+      console.log("Inside AuthController refreshtoken");
+      console.log("user id is(req.user.id)", req.user.id)
+      console.log("user id(req.userId) is ",req.userId)
+      return this.authService.refreshToken(req.user.id);
     }
 
 }
