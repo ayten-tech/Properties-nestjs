@@ -33,6 +33,11 @@ import {
   
     @Column()
     password: string;
+
+    @Column({ type: 'text', nullable: true }) // Ensures database allows NULL
+    hashedRefreshToken?: string | null;
+    // Stores hashed refresh token
+
   
 
     @OneToMany(() => Property, (property) => property.user)

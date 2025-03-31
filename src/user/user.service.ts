@@ -12,6 +12,11 @@ export class UserService {
     private userRepository: Repository<User>,
   ){}
 
+  async updateRefreshToken(userId: number, hashedRefreshToken: string | null) {
+    console.log("updateRefreshToken method in user service called")
+  return await this.userRepository.update(userId, {hashedRefreshToken});
+  }
+
   async create(createUserDto: CreateUserDto) {
       const user = this.userRepository.create(createUserDto);
     return await this.userRepository.save(user);
@@ -27,7 +32,7 @@ export class UserService {
       where: { id },
       //returns specific columns instead of the whole entity, 
       // to return the whole entity just remove the following select clause
-      select: ['firstName','lastName','email']
+      select: ['firstName','lastName','email','hashedRefreshToken']
     });
   }
 

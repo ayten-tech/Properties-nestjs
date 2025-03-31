@@ -45,7 +45,7 @@ export class RefreshJwtStrategy extends PassportStrategy(Strategy,'refresh-jwt',
         console.log("The following tests if refreshToken is undefined")
         console.log("validate refresh strategy refresh token after cleaning is", refreshToken)
         console.log("validate refresh strategy user id is", userId)
-        //the returning object will be appended to the request object (Request.user) under the property name user (Request.user)
+        //calls method validateRefreshToken
         return this.authService.validateRefreshToken(userId, refreshToken);
         
       }
