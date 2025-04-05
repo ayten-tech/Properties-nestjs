@@ -7,6 +7,7 @@ import { ConfigType } from '@nestjs/config';
 import { AuthJwtPayload } from './types/auth-jwtPayload'
 import { error } from 'node:console';
 import * as argon2 from 'argon2'; //for hashing the refresh token before storing it in the database
+import { CurrentUser } from './types/current-user';
 
 @Injectable()
 export class AuthService {
@@ -103,5 +104,14 @@ export class AuthService {
 
       async signOut(userId: number){ //when user signs out assign hashrefresh token in db with null (invalidating refreshtoken)
         await this.userService.updateRefreshToken(userId, null);
+      }
+
+      async validateJwtUser(userId: number) {
+        const user = await this.userService.findOne(userId);
+        if (!user) {
+          throw new UnauthorizedException('User not found');
+        }
+        const currentUser: CurrentUser ={id: user.id, role:user.role};
+        return currentUser;
       }
 }

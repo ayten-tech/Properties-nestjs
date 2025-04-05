@@ -30,17 +30,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         console.log("inside constructor jwt strategy")
       }
       
-      //we extract token from decoder in the login function in auth servide
-      //the jwt strategy doesn't get executed unless declared gurads since guards activate strategy
-      // this function returns the object which contains the id of the user 
-      //the it will be appended to the request object under the name user 
-      //in the Get("profile") in user controller
-      validate(payload: AuthJwtPayload ) { 
-        //After token verification, Passport automatically calls this function, providing the decoded payload. 
-        //Then this method extracts and returns the userid as an object so that the controller attaches it to `req.user` and access endpoint
-        // after attachement becomes req.user = { id: "18" }; in our case
-        // Payload contains user data from the JWT token
-        console.log('validate function (jwt strategy) id:',payload.sub)
-        return { id: payload.sub}; //this object will be appended to the request object under the name user
+      validate(payload: AuthJwtPayload) {
+        const userId = payload.sub;
+        return this.authService.validateJwtUser(userId);
       }
 }

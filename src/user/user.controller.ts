@@ -1,10 +1,13 @@
-import { Controller, Get, Param, NotFoundException,Body,Post,UsePipes, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Param, NotFoundException,Body,Post,UsePipes, UseGuards, Req, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ValidationPipe } from '@nestjs/common';
 import { ParseIdPipe } from '../property/pipes/parseIdPipe';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
+import { Role } from 'src/auth/enums/role.enum';
 import { get } from 'http';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RoleGuard } from 'src/auth/guards/roles/role.guard';
 
 
 @Controller('users')
@@ -51,6 +54,15 @@ export class UserController {
   getProfile(@Req() req) {
     console.log('inside profile user controller the return is ',req.user.id )
     return this.userService.findOne(req.user.id);// { id: "18" } this comes from validation method after attachement
+  }
+  //to test this go to login endpoint 1st then go to the access token and copy access token paste it in the delete endpoint
+  @Roles(Role.EDITOR,Role.ADMIN)
+  @UseGuards(RoleGuard)
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    //nest js cast id string to integar 
+    return this.userService.remove(+id);
   }
 
 }

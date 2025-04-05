@@ -10,6 +10,7 @@ import {
   } from 'typeorm';
   import { Property } from './property.entity';
   import * as bcrypt from 'bcryptjs';
+  import { Role } from 'src/auth/enums/role.enum';
   
   @Entity()
   export class User {
@@ -24,6 +25,13 @@ import {
   
     @Column()
     email: string;
+
+    @Column({
+      type: 'enum',
+      enum: Role,
+      default: Role.USER,
+    })
+    role: Role;
   
     @Column({ nullable: true })
     avatarUrl: string;

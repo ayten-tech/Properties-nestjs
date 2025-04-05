@@ -32,13 +32,18 @@ export class UserService {
       where: { id },
       //returns specific columns instead of the whole entity, 
       // to return the whole entity just remove the following select clause
-      select: ['firstName','lastName','email','hashedRefreshToken']
+      select: ['id','firstName','lastName','email','hashedRefreshToken','role']
     });
   }
 
   //will retreive user based on email parameter(local strategy)
   async findByEmail(email: string){
     return await this.userRepository.findOne({ where: { email } });
+  }
+
+  remove(id: number) {
+    //returns simple message for now
+    return `This action removes a #${id} user`;
   }
 
 }
